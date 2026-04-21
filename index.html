@@ -3,175 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Panier au Détail</title>
+    <title>Mon Assistant Courses Pro</title>
     <style>
         :root {
-            --primary: #00796b; --accent: #ff8f00; --bg: #e0f2f1; --card-bg: #ffffff;
-            --text-main: #37474f; --success: #2e7d32; --light-gray: #cfd8dc;
+            --primary: #2c3e50; --accent: #27ae60; --bg: #ecf0f1;
+            --frais: #3498db; --sale: #e67e22; --sucre: #9b59b6; 
+            --boissons: #1abc9c; --animaux: #795548; --hygiene: #e91e63;
         }
-        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
-        header { background: var(--primary); color: white; width: 100%; padding: 15px 0; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
-        .container { width: 100%; max-width: 650px; padding: 20px; box-sizing: border-box; margin-bottom: 110px; }
-        
-        .section-title { color: var(--primary); border-bottom: 2px solid var(--primary); margin-top: 30px; font-weight: 400; padding-bottom: 5px; }
-        .category-title { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; font-weight: 700; margin: 15px 0 5px 5px; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background: var(--bg); margin: 0; padding: 0; padding-bottom: 100px; }
+        header { background: var(--primary); color: white; text-align: center; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+        .container { max-width: 600px; margin: auto; padding: 15px; }
 
-        .item-card {
-            background: var(--card-bg); border-radius: 10px; padding: 12px 15px; margin-bottom: 10px;
-            display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid #ccc;
-            transition: all 0.3s ease;
+        /* Styles des Sections */
+        h2 { font-size: 1.1rem; color: var(--primary); border-left: 4px solid var(--primary); padding-left: 10px; margin-top: 25px; }
+        .category-label { font-size: 0.75rem; font-weight: bold; text-transform: uppercase; margin: 15px 0 5px 5px; color: #7f8c8d; }
+
+        /* Cartes Articles */
+        .card { 
+            background: white; border-radius: 8px; padding: 12px; margin-bottom: 8px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); border-left: 6px solid #ccc;
         }
-        
-        .item-card.checked { background: #eceff1; border-left-color: var(--light-gray); opacity: 0.8; }
-        .item-card.checked .item-name { text-decoration: line-through; color: #78909c; }
+        .info { flex: 1; margin-left: 10px; }
+        .name { font-weight: 600; display: block; color: #2c3e50; }
+        .target { font-size: 0.7rem; color: #95a5a6; }
 
-        .item-info { flex: 1; }
-        .item-name { font-weight: 600; display: block; }
-        .item-target { font-size: 0.75rem; color: #78909c; }
+        /* Contrôles Quantité */
+        .controls { display: flex; align-items: center; gap: 10px; background: #f8f9fa; padding: 5px 10px; border-radius: 20px; margin: 0 10px; }
+        .btn { background: white; border: 1px solid #ddd; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; font-weight: bold; }
+        .btn:active { background: #eee; }
+        .qty { font-weight: bold; min-width: 15px; text-align: center; }
 
-        .controls { display: flex; align-items: center; gap: 8px; background: #f1f3f4; padding: 4px 8px; border-radius: 20px; }
-        .btn-qty { 
-            background: white; border: 1px solid #ddd; width: 26px; height: 26px; 
-            border-radius: 50%; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center;
+        /* Prix et Checkbox */
+        .price { font-weight: bold; min-width: 65px; text-align: right; color: var(--primary); }
+        input[type="checkbox"] { transform: scale(1.5); cursor: pointer; }
+
+        /* États */
+        .checked { opacity: 0.6; background: #dcdde1; border-left-color: #95a5a6 !important; }
+        .checked .name { text-decoration: line-through; }
+
+        /* Couleurs Catégories */
+        .cat-frais { border-left-color: var(--frais); }
+        .cat-sale { border-left-color: var(--sale); }
+        .cat-sucre { border-left-color: var(--sucre); }
+        .cat-boissons { border-left-color: var(--boissons); }
+        .cat-animaux { border-left-color: var(--animaux); }
+        .cat-hygiene { border-left-color: var(--hygiene); }
+
+        /* Total Fixe */
+        .footer-total {
+            position: fixed; bottom: 0; width: 100%; background: var(--accent); color: white;
+            text-align: center; padding: 15px 0; box-shadow: 0 -3px 10px rgba(0,0,0,0.1);
         }
-        .qty-val { font-weight: bold; min-width: 18px; text-align: center; }
-
-        .item-total-price { font-weight: 700; min-width: 65px; text-align: right; }
-        
-        input[type="checkbox"] { width: 22px; height: 22px; cursor: pointer; accent-color: var(--primary); }
-
-        .total-float {
-            position: fixed; bottom: 0; width: 100%; background: var(--success); color: white;
-            padding: 15px; text-align: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.2); z-index: 100;
-        }
-        .total-amount { font-size: 2.2rem; font-weight: 800; }
-        
-        /* Couleurs bordures */
-        .frais { border-left-color: #2196f3; } .sale { border-left-color: #ff9800; }
-        .sucre { border-left-color: #e91e63; } .boissons { border-left-color: #4caf50; }
-        .animaux { border-left-color: #795548; } .hygiene { border-left-color: #9c27b0; }
-        .fruits { border-left-color: #ffeb3b; }
+        .total-val { font-size: 2.2rem; font-weight: 800; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Ma Liste au Détail</h1>
-    <span>1. Ajustez la quantité &nbsp;|&nbsp; 2. Cochez pour encaisser</span>
+    <h1>Ma Liste de Courses</h1>
+    <p style="margin:0; opacity:0.8">Gérez vos quantités et votre panier</p>
 </header>
 
 <div class="container">
-    <div id="todoSection">
-        <h2 class="section-title">À ACHETER</h2>
-        <div id="todoList"></div>
-    </div>
+    <div id="todo-list">
+        </div>
 
-    <div id="doneSection">
-        <h2 class="section-title">DANS LE PANIER</h2>
-        <div id="doneList"></div>
-    </div>
+    <h2 style="color: #7f8c8d; border-color: #7f8c8d;">MON PANIER</h2>
+    <div id="done-list">
+        </div>
 </div>
 
-<div class="total-float">
-    <span style="font-size: 0.9rem; opacity:0.9">TOTAL PANIER (Articles cochés)</span><br>
-    <span class="total-amount"><span id="grandTotal">0.00</span> €</span>
+<div class="footer-total">
+    <div style="font-size: 0.8rem; text-transform: uppercase;">Total à payer en caisse</div>
+    <div class="total-val"><span id="total-price">0.00</span> €</div>
 </div>
 
 <script>
-    let shoppingList = [
-        { cat: "Produits Frais", id: "frais", name: "Blancs de dinde/poulet", unitPrice: 1.89, target: "15 lots", qty: 1, checked: false },
-        { cat: "Produits Frais", id: "frais", name: "Yaourts chèvre vanille", unitPrice: 2.05, target: "15 packs", qty: 1, checked: false },
-        { cat: "Produits Frais", id: "frais", name: "Œufs (boîte de 12)", unitPrice: 2.88, target: "2 boîtes", qty: 1, checked: false },
-        { cat: "Épicerie Salée", id: "sale", name: "Riz Ribasmati (1kg)", unitPrice: 1.93, target: "2 kg", qty: 1, checked: false },
-        { cat: "Épicerie Salée", id: "sale", name: "Riz Riron (1kg)", unitPrice: 1.77, target: "1 kg", qty: 1, checked: false },
-        { cat: "Épicerie Salée", id: "sale", name: "Maquereaux moutarde", unitPrice: 3.94, target: "5 lots", qty: 1, checked: false },
-        { cat: "Épicerie Salée", id: "sale", name: "Sardines à la tomate", unitPrice: 1.15, target: "10 boîtes", qty: 1, checked: false },
-        { cat: "Épicerie Sucrée", id: "sucre", name: "Galettes St-Michel", unitPrice: 1.59, target: "15 lots", qty: 1, checked: false },
-        { cat: "Épicerie Sucrée", id: "sucre", name: "Chocolat Poulain", unitPrice: 2.37, target: "4 lots", qty: 1, checked: false },
-        { cat: "Épicerie Sucrée", id: "sucre", name: "Biscottes", unitPrice: 1.57, target: "4 paquets", qty: 1, checked: false },
-        { cat: "Boissons", id: "boissons", name: "Lait soja vanille (1L)", unitPrice: 1.45, target: "8 litres", qty: 1, checked: false },
-        { cat: "Boissons", id: "boissons", name: "Eau Cristaline (pack)", unitPrice: 1.20, target: "8 packs", qty: 1, checked: false },
-        { cat: "Fruits & Légumes", id: "fruits", name: "Bananes (lot de 5)", unitPrice: 0.99, target: "4 lots", qty: 1, checked: false },
-        { cat: "Animaux", id: "animaux", name: "Croquettes Fido (sac)", unitPrice: 21.81, target: "1 sac", qty: 1, checked: false },
-        { cat: "Animaux", id: "animaux", name: "Pâtée pour chat", unitPrice: 0.23, target: "12 boîtes", qty: 1, checked: false },
-        { cat: "Hygiène", id: "hygiene", name: "Gel douche Mixa Bébé", unitPrice: 5.70, target: "1 flacon", qty: 1, checked: false }
+    // Base de données de vos produits avec prix exacts
+    let products = [
+        { cat: "Produits Frais", id: "frais", name: "Yaourts chèvre vanille", unit: 2.05, goal: "15 packs", qty: 1, checked: false },
+        { cat: "Produits Frais", id: "frais", name: "Blancs de dinde/poulet", unit: 1.89, goal: "15 lots", qty: 1, checked: false },
+        { cat: "Produits Frais", id: "frais", name: "Œufs (12)", unit: 2.88, goal: "2 boîtes", qty: 1, checked: false },
+        { cat: "Épicerie Salée", id: "sale", name: "Riz Ribasmati", unit: 1.93, goal: "2 kg", qty: 1, checked: false },
+        { cat: "Épicerie Salée", id: "sale", name: "Riz Riron", unit: 1.77, goal: "1 kg", qty: 1, checked: false },
+        { cat: "Épicerie Salée", id: "sale", name: "Maquereaux moutarde", unit: 3.94, goal: "5 lots", qty: 1, checked: false },
+        { cat: "Épicerie Salée", id: "sale", name: "Sardines à la tomate", unit: 1.15, goal: "10 boîtes", qty: 1, checked: false },
+        { cat: "Épicerie Sucrée", id: "sucre", name: "Galettes St-Michel", unit: 1.59, goal: "15 lots", qty: 1, checked: false },
+        { cat: "Épicerie Sucrée", id: "sucre", name: "Chocolat Poulain", unit: 2.37, goal: "4 lots", qty: 1, checked: false },
+        { cat: "Épicerie Sucrée", id: "sucre", name: "Biscottes", unit: 1.57, goal: "4 paquets", qty: 1, checked: false },
+        { cat: "Boissons", id: "boissons", name: "Lait soja vanille", unit: 1.45, goal: "8 L", qty: 1, checked: false },
+        { cat: "Boissons", id: "boissons", name: "Eau Cristaline", unit: 1.20, goal: "8 packs", qty: 1, checked: false },
+        { cat: "Fruits", id: "frais", name: "Bananes", unit: 0.99, goal: "4 lots", qty: 1, checked: false },
+        { cat: "Animaux", id: "animaux", name: "Croquettes Fido", unit: 21.81, goal: "1 sac", qty: 1, checked: false },
+        { cat: "Animaux", id: "animaux", name: "Pâtée pour chat", unit: 0.23, goal: "12 boîtes", qty: 1, checked: false },
+        { cat: "Hygiène", id: "hygiene", name: "Gel douche Mixa", unit: 5.70, goal: "1 flacon", qty: 1, checked: false }
     ];
 
-    if (localStorage.getItem('myFinalShoppingList')) {
-        shoppingList = JSON.parse(localStorage.getItem('myFinalShoppingList'));
+    // Chargement de la mémoire
+    if(localStorage.getItem('courses_data')) {
+        products = JSON.parse(localStorage.getItem('courses_data'));
     }
 
-    function render() {
-        const todoList = document.getElementById('todoList');
-        const doneList = document.getElementById('doneList');
-        const grandTotal = document.getElementById('grandTotal');
-        
-        todoList.innerHTML = '';
-        doneList.innerHTML = '';
-        let totalPanier = 0;
+    function update() {
+        const todoDiv = document.getElementById('todo-list');
+        const doneDiv = document.getElementById('done-list');
+        let total = 0;
 
-        // Groupes pour "À acheter"
-        const activeCategories = [...new Set(shoppingList.filter(i => !i.checked).map(item => item.cat))];
-        
-        activeCategories.forEach(catName => {
-            const catDiv = document.createElement('div');
-            catDiv.innerHTML = `<div class="category-title">${catName}</div>`;
-            
-            shoppingList.filter(i => i.cat === catName && !i.checked).forEach(item => {
-                catDiv.appendChild(createCard(item));
-            });
-            todoList.appendChild(catDiv);
+        todoDiv.innerHTML = '';
+        doneDiv.innerHTML = '';
+
+        // Groupement par catégories pour la liste "À acheter"
+        const categories = [...new Set(products.map(p => p.cat))];
+
+        categories.forEach(cat => {
+            const items = products.filter(p => p.cat === cat && !p.checked);
+            if(items.length > 0) {
+                const catTitle = document.createElement('div');
+                catTitle.className = 'category-label';
+                catTitle.innerText = cat;
+                todoDiv.appendChild(catTitle);
+                
+                items.forEach(p => todoDiv.appendChild(createCard(p)));
+            }
         });
 
-        // Panier (Simple liste)
-        const itemsInPanier = shoppingList.filter(i => i.checked);
-        itemsInPanier.forEach(item => {
-            doneList.appendChild(createCard(item));
-            totalPanier += (item.qty * item.unitPrice);
+        // Liste Panier
+        const doneItems = products.filter(p => p.checked);
+        doneItems.forEach(p => {
+            doneDiv.appendChild(createCard(p));
+            total += (p.unit * p.qty);
         });
 
-        grandTotal.innerText = totalPanier.toFixed(2);
-        localStorage.setItem('myFinalShoppingList', JSON.stringify(shoppingList));
+        document.getElementById('total-price').innerText = total.toFixed(2);
+        localStorage.setItem('courses_data', JSON.stringify(products));
     }
 
-    function createCard(item) {
-        const idx = shoppingList.indexOf(item);
-        const itemTotal = item.qty * item.unitPrice;
-        const card = document.createElement('div');
-        card.className = `item-card ${item.id} ${item.checked ? 'checked' : ''}`;
+    function createCard(p) {
+        const index = products.indexOf(p);
+        const div = document.createElement('div');
+        div.className = `card cat-${p.id} ${p.checked ? 'checked' : ''}`;
         
-        card.innerHTML = `
-            <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggle(${idx})">
-            <div class="item-info">
-                <span class="item-name">${item.name}</span>
-                <span class="item-target">${item.target} (obj. mois)</span>
+        div.innerHTML = `
+            <input type="checkbox" ${p.checked ? 'checked' : ''} onchange="toggle(${index})">
+            <div class="info">
+                <span class="name">${p.name}</span>
+                <span class="target">Obj. mois: ${p.goal} (${p.unit.toFixed(2)}€/u)</span>
             </div>
-            ${!item.checked ? `
+            ${!p.checked ? `
                 <div class="controls">
-                    <button class="btn-qty" onclick="changeQty(${idx}, -1)">-</button>
-                    <span class="qty-val">${item.qty}</span>
-                    <button class="btn-qty" onclick="changeQty(${idx}, 1)">+</button>
+                    <button class="btn" onclick="change(${index}, -1)">-</button>
+                    <span class="qty">${p.qty}</span>
+                    <button class="btn" onclick="change(${index}, 1)">+</button>
                 </div>
-            ` : `<div style="font-size:0.9rem; color:#78909c">Qté: ${item.qty}</div>`}
-            <div class="item-total-price" style="color: ${item.checked ? '#78909c' : 'var(--primary)'}">
-                ${itemTotal.toFixed(2)} €
-            </div>
+            ` : `<div style="margin-right:15px; font-weight:bold;">Qté: ${p.qty}</div>`}
+            <div class="price">${(p.unit * p.qty).toFixed(2)} €</div>
         `;
-        return card;
+        return div;
     }
 
-    function changeQty(idx, delta) {
-        shoppingList[idx].qty = Math.max(1, shoppingList[idx].qty + delta);
-        render();
+    window.change = function(index, delta) {
+        products[index].qty = Math.max(1, products[index].qty + delta);
+        update();
     }
 
-    function toggle(idx) {
-        shoppingList[idx].checked = !shoppingList[idx].checked;
-        render();
+    window.toggle = function(index) {
+        products[index].checked = !products[index].checked;
+        update();
     }
 
-    render();
+    update();
 </script>
+
 </body>
 </html>
