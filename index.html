@@ -3,386 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mon Assistant Courses Coloré</title>
+    <title>Mes Courses au Détail</title>
     <style>
         :root {
-            --primary: #00796b; /* Bleu canard foncé pour l'en-tête */
-            --accent: #ff8f00; /* Ambre pour les titres de catégorie */
-            --bg: #e0f2f1; /* Bleu très clair pour le fond */
-            --card-bg: #ffffff;
-            --text-main: #37474f;
-            --text-light: #90a4ae;
-            --success: #2e7d32; /* Vert pour le total */
-            
-            /* Couleurs des catégories */
-            --cat-frais: #e3f2fd; /* Bleu clair */
-            --cat-sale: #fff3e0; /* Orange clair */
-            --cat-sucre: #fce4ec; /* Rose clair */
-            --cat-boissons: #e8f5e9; /* Vert clair */
-            --cat-fruits: #fffde7; /* Jaune clair */
-            --cat-animaux: #efebe9; /* Marron clair */
-            --cat-hygiene: #f3e5f5; /* Violet clair */
-            --cat-divers: #f5f5f5; /* Gris clair */
+            --primary: #00796b; --accent: #ff8f00; --bg: #e0f2f1; --card-bg: #ffffff;
+            --text-main: #37474f; --success: #2e7d32;
         }
+        body { font-family: 'Segoe UI', sans-serif; background-color: var(--bg); color: var(--text-main); margin: 0; padding: 0; display: flex; flex-direction: column; align-items: center; }
+        header { background: var(--primary); color: white; width: 100%; padding: 15px 0; text-align: center; box-shadow: 0 2px 10px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
+        .container { width: 100%; max-width: 650px; padding: 20px; box-sizing: border-box; margin-bottom: 100px; }
+        
+        .section-title { color: var(--primary); border-bottom: 2px solid var(--primary); margin-top: 30px; font-weight: 400; }
+        .category-title { color: var(--accent); font-size: 0.8rem; text-transform: uppercase; font-weight: 700; margin: 15px 0 5px 5px; }
 
-        body {
-            font-family: 'Roboto', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-main);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        header {
-            background-color: var(--primary);
-            color: white;
-            width: 100%;
-            padding: 20px 0;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        header h1 { margin: 0; font-size: 1.8rem; font-weight: 300; }
-        header span { font-size: 0.9rem; opacity: 0.8; }
-
-        .container {
-            width: 100%;
-            max-width: 650px;
-            padding: 20px;
-            box-sizing: border-box;
-            margin-bottom: 80px; /* Espace pour le total flottant */
-        }
-
-        /* Zone d'ajout */
-        .add-item-box {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 25px;
-            background: var(--card-bg);
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .add-item-box input {
-            padding: 12px;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            font-size: 1rem;
-            flex: 1;
-        }
-
-        .add-item-box input[type="number"] { width: 90px; flex: none; }
-
-        .add-item-box button {
-            background-color: var(--accent);
-            color: white;
-            border: none;
-            padding: 0 20px;
-            border-radius: 8px;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-
-        .add-item-box button:hover { background-color: #f57c00; }
-
-        /* Sections principalse */
-        .section-title {
-            color: var(--primary);
-            border-bottom: 2px solid var(--primary);
-            padding-bottom: 5px;
-            margin-top: 35px;
-            font-weight: 400;
-            font-size: 1.3rem;
-        }
-
-        /* Style des catégories */
-        .category-block { margin-bottom: 15px; }
-
-        .category-title {
-            color: var(--accent);
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            font-weight: 700;
-            margin: 15px 0 8px 5px;
-        }
-
-        /* Style des cartes d'articles */
         .item-card {
-            background-color: var(--card-bg);
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-            transition: transform 0.2s, box-shadow 0.2s;
-            border-left: 5px solid transparent; /* Pour la couleur de catégorie */
+            background: var(--card-bg); border-radius: 10px; padding: 12px 15px; margin-bottom: 10px;
+            display: flex; align-items: center; justify-content: space-between;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05); border-left: 5px solid #ccc;
         }
+        .item-info { flex: 1; }
+        .item-name { font-weight: 500; display: block; }
+        .item-target { font-size: 0.75rem; color: #78909c; }
 
-        .item-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+        .controls { display: flex; align-items: center; gap: 10px; background: #f1f3f4; padding: 5px 10px; border-radius: 20px; }
+        .btn-qty { 
+            background: white; border: 1px solid #ddd; width: 28px; height: 28px; 
+            border-radius: 50%; cursor: pointer; font-weight: bold; display: flex; align-items: center; justify-content: center;
         }
+        .btn-qty:hover { background: var(--accent); color: white; }
+        .qty-val { font-weight: bold; min-width: 20px; text-align: center; }
 
-        /* Checkbox stylisée */
-        .item-check-wrapper {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.05rem;
-        }
+        .item-total-price { font-weight: 700; min-width: 70px; text-align: right; color: var(--primary); }
 
-        .item-card input[type="checkbox"] {
-            width: 22px;
-            height: 22px;
-            accent-color: var(--primary); /* Couleur de la checkbox cochée */
-            cursor: pointer;
-        }
-
-        .item-price {
-            font-weight: 700;
-            color: var(--text-main);
-            font-size: 1.1rem;
-            white-space: nowrap;
-        }
-
-        /* Styles pour les articles cochés (Panier) */
-        .item-card.checked {
-            background-color: #f5f5f5;
-            color: var(--text-light);
-            border-left-color: #bdbdbd !important; /* Gris pour tout ce qui est coché */
-            box-shadow: none;
-        }
-
-        .item-card.checked .item-name { text-decoration: line-through; }
-        .item-card.checked .item-price { color: var(--text-light); }
-
-        /* Total flottant */
         .total-float {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background-color: var(--success);
-            color: white;
-            padding: 15px 0;
-            text-align: center;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
-            z-index: 100;
+            position: fixed; bottom: 0; width: 100%; background: var(--success); color: white;
+            padding: 20px; text-align: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.2);
         }
-
-        .total-float .total-label { font-size: 1rem; opacity: 0.9; margin-right: 10px; }
-        .total-float .total-amount { font-size: 1.8rem; font-weight: 700; }
-
-        /* Couleurs des bordures de catégorie */
-        .cat-border-frais { border-left-color: #2196f3; }
-        .cat-border-sale { border-left-color: #ff9800; }
-        .cat-border-sucre { border-left-color: #e91e63; }
-        .cat-border-boissons { border-left-color: #4caf50; }
-        .cat-border-fruits { border-left-color: #ffeb3b; }
-        .cat-border-animaux { border-left-color: #795548; }
-        .cat-border-hygiene { border-left-color: #9c27b0; }
-        .cat-border-divers { border-left-color: #9e9e9e; }
-
+        .total-amount { font-size: 2rem; font-weight: 800; }
+        
+        /* Couleurs bordures */
+        .frais { border-left-color: #2196f3; } .sale { border-left-color: #ff9800; }
+        .sucre { border-left-color: #e91e63; } .boissons { border-left-color: #4caf50; }
+        .animaux { border-left-color: #795548; } .hygiene { border-left-color: #9c27b0; }
     </style>
 </head>
 <body>
 
 <header>
-    <h1>Mes Courses</h1>
-    <span>Budget Mensuel Planifié</span>
+    <h1>Ma Liste au Détail</h1>
+    <span>Cliquez sur + pour ajouter au panier</span>
 </header>
 
-<div class="container">
-    
-    <div class="add-item-box">
-        <input type="text" id="itemName" placeholder="Ajouter un article (ex: Pain)">
-        <input type="number" id="itemPrice" step="0.01" placeholder="Prix (€)">
-        <button onclick="addNewItem()">+</button>
+<div class="container" id="mainList">
     </div>
-
-    <div id="todoSection">
-        <h2 class="section-title">À acheter</h2>
-        <div id="todoList">
-            </div>
-    </div>
-
-    <div id="doneSection">
-        <h2 class="section-title">Dans le panier</h2>
-        <div id="doneList">
-            </div>
-    </div>
-
-</div>
 
 <div class="total-float">
-    <span class="total-label">Dépensé dans le panier :</span>
+    <span style="opacity:0.9">Total Panier actuel :</span><br>
     <span class="total-amount"><span id="grandTotal">0.00</span> €</span>
 </div>
 
 <script>
-    // Liste organisée par catégories avec identifiants pour les styles
     let shoppingList = [
-        { cat: "Produits Frais", catId: "frais", name: "Blancs de dinde/poulet (15 lots)", price: 28.35, checked: false },
-        { cat: "Produits Frais", catId: "frais", name: "Yaourts chèvre vanille (15 packs)", price: 30.75, checked: false },
-        { cat: "Produits Frais", catId: "frais", name: "Œufs (2 boîtes de 12)", price: 5.76, checked: false },
-        
-        { cat: "Épicerie Salée", catId: "sale", name: "Riz Ribasmati (2 kg)", price: 3.86, checked: false },
-        { cat: "Épicerie Salée", catId: "sale", name: "Riz Riron (1 kg)", price: 1.77, checked: false },
-        { cat: "Épicerie Salée", catId: "sale", name: "Maquereaux moutarde (5 lots)", price: 19.70, checked: false },
-        { cat: "Épicerie Salée", catId: "sale", name: "Sardines à la tomate (10 boîtes)", price: 11.50, checked: false },
-        
-        { cat: "Épicerie Sucrée", catId: "sucre", name: "Galettes St-Michel (15 lots)", price: 23.85, checked: false },
-        { cat: "Épicerie Sucrée", catId: "sucre", name: "Chocolat Poulain (4 lots)", price: 9.48, checked: false },
-        { cat: "Épicerie Sucrée", catId: "sucre", name: "Biscottes (4 paquets)", price: 6.28, checked: false },
-        
-        { cat: "Boissons", catId: "boissons", name: "Lait soja vanille (8L)", price: 11.60, checked: false },
-        { cat: "Boissons", catId: "boissons", name: "Eau Cristaline (8 packs)", price: 9.60, checked: false },
-        
-        { cat: "Fruits & Légumes", catId: "fruits", name: "Bananes (20 unités)", price: 3.96, checked: false },
-        
-        { cat: "Animaux", catId: "animaux", name: "Croquettes Fido (1 sac)", price: 21.81, checked: false },
-        { cat: "Animaux", catId: "animaux", name: "Pâtée pour chat (12 boîtes)", price: 2.76, checked: false },
-        
-        { cat: "Hygiène", catId: "hygiene", name: "Gel douche Mixa Bébé", price: 5.70, checked: false }
+        { cat: "Produits Frais", id: "frais", name: "Blancs de dinde/poulet", unitPrice: 1.89, target: "15 lots", qty: 0 },
+        { cat: "Produits Frais", id: "frais", name: "Yaourts chèvre vanille", unitPrice: 2.05, target: "15 packs", qty: 0 },
+        { cat: "Produits Frais", id: "frais", name: "Œufs (boîte de 12)", unitPrice: 2.88, target: "2 boîtes", qty: 0 },
+        { cat: "Épicerie Salée", id: "sale", name: "Riz Ribasmati (1kg)", unitPrice: 1.93, target: "2 kg", qty: 0 },
+        { cat: "Épicerie Salée", id: "sale", name: "Riz Riron (1kg)", unitPrice: 1.77, target: "1 kg", qty: 0 },
+        { cat: "Épicerie Salée", id: "sale", name: "Maquereaux moutarde", unitPrice: 3.94, target: "5 lots", qty: 0 },
+        { cat: "Épicerie Salée", id: "sale", name: "Sardines à la tomate", unitPrice: 1.15, target: "10 boîtes", qty: 0 },
+        { cat: "Épicerie Sucrée", id: "sucre", name: "Galettes St-Michel", unitPrice: 1.59, target: "15 lots", qty: 0 },
+        { cat: "Épicerie Sucrée", id: "sucre", name: "Chocolat Poulain", unitPrice: 2.37, target: "4 lots", qty: 0 },
+        { cat: "Épicerie Sucrée", id: "sucre", name: "Biscottes", unitPrice: 1.57, target: "4 paquets", qty: 0 },
+        { cat: "Boissons", id: "boissons", name: "Lait soja vanille (1L)", unitPrice: 1.45, target: "8 litres", qty: 0 },
+        { cat: "Boissons", id: "boissons", name: "Eau Cristaline (pack)", unitPrice: 1.20, target: "8 packs", qty: 0 },
+        { cat: "Fruits & Légumes", id: "fruits", name: "Bananes (lot de 5)", unitPrice: 0.99, target: "4 lots", qty: 0 },
+        { cat: "Animaux", id: "animaux", name: "Croquettes Fido (sac)", unitPrice: 21.81, target: "1 sac", qty: 0 },
+        { cat: "Animaux", id: "animaux", name: "Pâtée pour chat", unitPrice: 0.23, target: "12 boîtes", qty: 0 },
+        { cat: "Hygiène", id: "hygiene", name: "Gel douche Mixa Bébé", unitPrice: 5.70, target: "1 flacon", qty: 0 }
     ];
 
-    // Charger la liste sauvegardée si elle existe
-    if (localStorage.getItem('myColoredShoppingList')) {
-        shoppingList = JSON.parse(localStorage.getItem('myColoredShoppingList'));
-    }
-
     function render() {
-        const todoContainer = document.getElementById('todoList');
-        const doneContainer = document.getElementById('doneList');
-        const totalDisp = document.getElementById('grandTotal');
-        
-        // Vider les conteneurs
-        todoContainer.innerHTML = '';
-        doneContainer.innerHTML = '';
-        
-        let total = 0;
+        const container = document.getElementById('mainList');
+        container.innerHTML = '';
+        let totalGeneral = 0;
 
-        // --- Rendre la liste "À ACHETER" (Groupée par catégorie) ---
-        // Obtenir les catégories uniques des articles NON cochés
-        let activeCategories = [...new Set(shoppingList.filter(i => !i.checked).map(item => item.cat))];
-        
-        // Trier les catégories pour un ordre constant (optionnel)
-        activeCategories.sort();
+        const categories = [...new Set(shoppingList.map(item => item.cat))];
 
-        activeCategories.forEach(catName => {
-            const itemsInCat = shoppingList.filter(i => i.cat === catName && !i.checked);
+        categories.forEach(catName => {
+            const catDiv = document.createElement('div');
+            catDiv.innerHTML = `<div class="category-title">${catName}</div>`;
             
-            if (itemsInCat.length > 0) {
-                // Créer un bloc pour la catégorie
-                const catBlock = document.createElement('div');
-                catBlock.className = 'category-block';
-                
-                // Titre de la catégorie
-                catBlock.innerHTML = `<div class="category-title">${catName}</div>`;
-                
-                // Ajouter les articles de cette catégorie
-                itemsInCat.forEach(item => {
-                    catBlock.appendChild(createItemCard(item));
-                });
-                
-                todoContainer.appendChild(catBlock);
-            }
+            shoppingList.filter(i => i.cat === catName).forEach(item => {
+                const itemTotal = item.qty * item.unitPrice;
+                totalGeneral += itemTotal;
+
+                const card = document.createElement('div');
+                card.className = `item-card ${item.id}`;
+                card.innerHTML = `
+                    <div class="item-info">
+                        <span class="item-name">${item.name}</span>
+                        <span class="item-target">Objectif mois : ${item.target} (${item.unitPrice.toFixed(2)}€/u)</span>
+                    </div>
+                    <div class="controls">
+                        <button class="btn-qty" onclick="changeQty('${item.name}', -1)">-</button>
+                        <span class="qty-val">${item.qty}</span>
+                        <button class="btn-qty" onclick="changeQty('${item.name}', 1)">+</button>
+                    </div>
+                    <div class="item-total-price">${itemTotal.toFixed(2)} €</div>
+                `;
+                catDiv.appendChild(card);
+            });
+            container.appendChild(catDiv);
         });
 
-        // --- Rendre la liste "PANIER" (Simple liste plate) ---
-        const checkedItems = shoppingList.filter(i => i.checked);
-        
-        if (checkedItems.length > 0) {
-            checkedItems.forEach(item => {
-                doneContainer.appendChild(createItemCard(item));
-                total += item.price; // Calculer le total du panier
-            });
-        } else {
-            doneContainer.innerHTML = '<div style="color: #90a4ae; text-align:center; padding: 20px;">Votre panier est vide.</div>';
-        }
-
-        // Mettre à jour le total affiché
-        totalDisp.innerText = total.toFixed(2);
-        
-        // Sauvegarder dans le localStorage
-        localStorage.setItem('myColoredShoppingList', JSON.stringify(shoppingList));
+        document.getElementById('grandTotal').innerText = totalGeneral.toFixed(2);
     }
 
-    // Fonction pour créer la carte HTML d'un article
-    function createItemCard(item) {
-        // Trouver l'index réel dans la liste principale
-        const idx = shoppingList.indexOf(item);
-        
-        const card = document.createElement('div');
-        // Appliquer la classe de bordure de catégorie si non coché
-        const catClass = item.checked ? '' : `cat-border-${item.catId}`;
-        card.className = `item-card ${item.checked ? 'checked' : ''} ${catClass}`;
-        
-        card.innerHTML = `
-            <div class="item-check-wrapper">
-                <input type="checkbox" ${item.checked ? 'checked' : ''} onchange="toggleItem(${idx})">
-                <span class="item-name">${item.name}</span>
-            </div>
-            <div class="item-price">${item.price.toFixed(2)} €</div>
-        `;
-        
-        return card;
-    }
-
-    // Fonction pour cocher/décocher
-    function toggleItem(idx) {
-        shoppingList[idx].checked = !shoppingList[idx].checked;
-        render(); // Re-dessiner toute la page
-    }
-
-    // Fonction pour ajouter un nouvel article personnalisé
-    function addNewItem() {
-        const nameInput = document.getElementById('itemName');
-        const priceInput = document.getElementById('itemPrice');
-        
-        const name = nameInput.value.trim();
-        const price = parseFloat(priceInput.value);
-        
-        if (name && !isNaN(price) && price >= 0) {
-            // Ajouter à la liste avec la catégorie "Divers" par défaut
-            shoppingList.push({
-                cat: "Divers",
-                catId: "divers",
-                name: name,
-                price: price,
-                checked: false
-            });
-            
-            // Vider les champs
-            nameInput.value = '';
-            priceInput.value = '';
-            nameInput.focus();
-            
+    function changeQty(name, delta) {
+        const item = shoppingList.find(i => i.name === name);
+        if (item) {
+            item.qty = Math.max(0, item.qty + delta);
             render();
-        } else {
-            alert("Veuillez entrer un nom d'article valide et son prix (ex: 2.50).");
         }
     }
 
-    // Permettre d'ajouter avec la touche Entrée
-    document.getElementById('itemPrice').addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') { addNewItem(); }
-    });
-
-    // Premier rendu au chargement
     render();
-
 </script>
 </body>
 </html>
