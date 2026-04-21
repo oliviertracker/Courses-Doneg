@@ -3,193 +3,171 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Courses Leclerc Flers - Officiel</title>
+    <title>Courses Leclerc Flers</title>
     <style>
         :root {
             --primary: #1e272e; --accent: #05c46b; --bg: #f1f2f6;
             --frais: #3498db; --sale: #e67e22; --sucre: #ef5777; 
             --boissons: #0fbcf9; --animaux: #808e9b; --hygiene: #a55eea; --fruits: #ffa801;
         }
-        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); margin: 0; padding-bottom: 140px; color: var(--primary); }
-        header { background: var(--primary); color: white; text-align: center; padding: 15px; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 150px; }
+        header { background: var(--primary); color: white; text-align: center; padding: 15px; position: sticky; top: 0; z-index: 1000; }
         .container { max-width: 600px; margin: auto; padding: 10px; }
 
-        /* Bloc Catégorie */
-        .cat-block { background: white; border-radius: 18px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
-        .cat-header { display: flex; align-items: center; gap: 10px; margin-bottom: 15px; font-weight: 800; text-transform: uppercase; font-size: 0.85rem; border-bottom: 2px solid #f1f2f6; padding-bottom: 8px; }
-        .cat-dot { width: 12px; height: 12px; border-radius: 50%; }
+        .cat-block { background: white; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .cat-title { font-weight: bold; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
+        .dot { width: 10px; height: 10px; border-radius: 50%; }
 
-        /* Formulaire d'ajout rapide */
-        .quick-add { display: flex; gap: 5px; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 12px; }
-        .quick-add input { border: 1px solid #dcdde1; padding: 8px; border-radius: 8px; font-size: 0.9rem; }
-        .input-name { flex: 2; }
-        .input-price { width: 60px; }
-        .btn-ok { background: var(--primary); color: white; border: none; padding: 0 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        /* Formulaire d'ajout */
+        .add-zone { display: flex; gap: 5px; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 10px; }
+        .add-zone input { border: 1px solid #ccc; padding: 8px; border-radius: 5px; }
+        .in-name { flex: 2; }
+        .in-price { width: 60px; }
+        .btn-add { background: var(--primary); color: white; border: none; padding: 8px 12px; border-radius: 5px; font-weight: bold; cursor: pointer; }
 
-        /* Lignes d'articles */
-        .item-row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f2f6; gap: 12px; }
-        .item-row:last-child { border-bottom: none; }
-        .chk { width: 26px; height: 26px; cursor: pointer; accent-color: var(--accent); flex-shrink: 0; }
-        .item-main { flex: 1; }
-        .item-label { font-weight: 600; display: block; font-size: 1rem; }
-        .item-sub { font-size: 0.75rem; color: #7f8c8d; }
+        /* Lignes produits */
+        .row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f2f6; }
+        .chk { width: 25px; height: 25px; margin-right: 12px; accent-color: var(--accent); cursor: pointer; }
+        .info { flex: 1; }
+        .label { font-weight: bold; display: block; }
+        .meta { font-size: 0.75rem; color: #7f8c8d; }
 
-        /* Compteur +/- */
-        .counter { display: flex; align-items: center; gap: 8px; background: #f1f2f6; padding: 4px 10px; border-radius: 20px; }
-        .btn-c { background: white; border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; box-shadow: 0 1px 3px rgba(0,0,0,0.1); font-size: 1.2rem; }
-        .val-q { font-weight: 800; min-width: 15px; text-align: center; }
+        .cnt { display: flex; align-items: center; gap: 8px; background: #f1f2f6; padding: 5px 10px; border-radius: 20px; }
+        .btn-c { background: white; border: none; width: 26px; height: 26px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+        .val-q { font-weight: bold; min-width: 15px; text-align: center; }
 
-        .price-final { font-weight: 800; min-width: 75px; text-align: right; font-size: 1.05rem; }
+        .price-end { font-weight: bold; min-width: 70px; text-align: right; color: var(--primary); }
 
         /* Panier */
-        .in-panier { opacity: 0.6; background: #f8f9fa; }
-        .in-panier .item-label { text-decoration: line-through; color: #95a5a6; }
-        #panier-section { margin-top: 30px; }
+        .is-done { background: #f9f9f9; opacity: 0.6; }
+        .is-done .label { text-decoration: line-through; }
+        #panier-list .row { border-left: 4px solid var(--accent); padding-left: 10px; }
 
-        /* Footer Total */
-        .footer-total { position: fixed; bottom: 0; width: 100%; background: var(--accent); color: white; text-align: center; padding: 15px 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); z-index: 2000; }
-        .total-text { font-size: 0.8rem; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; opacity: 0.9; }
-        .total-number { font-size: 2.8rem; font-weight: 900; }
-
-        /* Couleurs */
-        .dot-frais { background: var(--frais); } .dot-sale { background: var(--sale); }
-        .dot-sucre { background: var(--sucre); } .dot-boissons { background: var(--boissons); }
-        .dot-fruits { background: var(--fruits); } .dot-animaux { background: var(--animaux); }
-        .dot-hygiene { background: var(--hygiene); }
+        .footer { position: fixed; bottom: 0; width: 100%; background: var(--accent); color: white; text-align: center; padding: 15px 0; box-shadow: 0 -5px 10px rgba(0,0,0,0.2); }
+        .total-num { font-size: 2.5rem; font-weight: 900; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 style="margin:0; font-size: 1.2rem;">🛒 Leclerc Flers : Ma Liste</h1>
-</header>
+<header><h1>LISTE COURSES LECLERC</h1></header>
 
 <div class="container">
-    <div id="lists-container"></div>
-
-    <div id="panier-section">
-        <h2 style="color:#7f8c8d; font-size: 1rem; border-bottom: 2px solid #ccc; padding-bottom: 10px; margin-left: 10px;">🛍️ MON PANIER</h2>
-        <div id="panier-items"></div>
-    </div>
+    <div id="main-content"></div>
+    <h2 style="color:#7f8c8d; margin-top:30px; border-bottom: 2px solid #ccc;">🛍️ PANIER</h2>
+    <div id="panier-list"></div>
 </div>
 
-<div class="footer-total">
-    <div class="total-text">Total à payer en caisse</div>
-    <div class="total-number"><span id="total-val">0.00</span> €</div>
+<div class="footer">
+    <div>TOTAL PANIER</div>
+    <div class="total-num"><span id="total-val">0.00</span> €</div>
 </div>
 
 <script>
-    const CONFIG = [
-        { id: 'frais', label: 'Produits Frais', color: 'dot-frais' },
-        { id: 'sale', label: 'Épicerie Salée', color: 'dot-sale' },
-        { id: 'sucre', label: 'Épicerie Sucrée', color: 'dot-sucre' },
-        { id: 'boissons', label: 'Boissons', color: 'dot-boissons' },
-        { id: 'fruits', label: 'Fruits & Légumes', color: 'dot-fruits' },
-        { id: 'animaux', label: 'Animaux', color: 'dot-animaux' },
-        { id: 'hygiene', label: 'Hygiène', color: 'dot-hygiene' }
+    const CATS = [
+        { id: 'frais', name: 'Produits Frais', color: '#3498db' },
+        { id: 'sale', name: 'Épicerie Salée', color: '#e67e22' },
+        { id: 'sucre', name: 'Épicerie Sucrée', color: '#ef5777' },
+        { id: 'boissons', name: 'Boissons', color: '#0fbcf9' },
+        { id: 'fruits', name: 'Fruits & Légumes', color: '#ffa801' },
+        { id: 'animaux', name: 'Animaux', color: '#808e9b' },
+        { id: 'hygiene', name: 'Hygiène', color: '#a55eea' }
     ];
 
-    let shoppingItems = [
-        { catId: 'frais', name: 'Yaourts chèvre vanille', price: 2.05, qty: 1, checked: false, goal: '15 packs' },
-        { catId: 'frais', name: 'Blancs de dinde / poulet', price: 1.89, qty: 1, checked: false, goal: '15 lots' },
-        { catId: 'frais', name: 'Œufs (boîte de 12)', price: 2.88, qty: 1, checked: false, goal: '2 boîtes' },
-        { catId: 'sale', name: 'Riz Ribasmati', price: 1.93, qty: 1, checked: false, goal: '2 kg' },
-        { catId: 'sale', name: 'Riz Riron', price: 1.77, qty: 1, checked: false, goal: '1 kg' },
-        { catId: 'sale', name: 'Maquereaux moutarde', price: 1.97, qty: 1, checked: false, goal: '5 lots' },
-        { catId: 'sale', name: 'Sardines à la tomate', price: 1.15, qty: 1, checked: false, goal: '10 boîtes' },
-        { catId: 'sucre', name: 'Galettes St-Michel', price: 1.59, qty: 1, checked: false, goal: '15 lots' },
-        { catId: 'sucre', name: 'Chocolat Poulain', price: 2.37, qty: 1, checked: false, goal: '4 lots' },
-        { catId: 'sucre', name: 'Biscottes', price: 1.57, qty: 1, checked: false, goal: '4 paquets' },
-        { catId: 'boissons', name: 'Lait soja vanille', price: 1.45, qty: 1, checked: false, goal: '8 litres' },
-        { catId: 'boissons', name: 'Eau Cristaline', price: 1.20, qty: 1, checked: false, goal: '8 packs' },
-        { catId: 'fruits', name: 'Bananes', price: 0.99, qty: 1, checked: false, goal: '4 lots' },
-        { catId: 'animaux', name: 'Croquettes Fido', price: 21.81, qty: 1, checked: false, goal: '1 sac' },
-        { catId: 'animaux', name: 'Pâtée pour chat', price: 0.23, qty: 1, checked: false, goal: '12 boîtes' },
-        { catId: 'hygiene', name: 'Gel douche Mixa', price: 5.70, qty: 1, checked: false, goal: '1 flacon' }
+    let data = [
+        { catId: 'frais', name: 'Yaourts chèvre vanille', price: 2.05, qty: 1, done: false },
+        { catId: 'frais', name: 'Blancs de dinde/poulet', price: 1.89, qty: 1, done: false },
+        { catId: 'frais', name: 'Œufs (12)', price: 2.88, qty: 1, done: false },
+        { catId: 'sale', name: 'Riz Ribasmati', price: 1.93, qty: 1, done: false },
+        { catId: 'sale', name: 'Riz Riron', price: 1.77, qty: 1, done: false },
+        { catId: 'sale', name: 'Maquereaux moutarde', price: 3.94, qty: 1, done: false },
+        { catId: 'sale', name: 'Sardines à la tomate', price: 1.15, qty: 1, done: false },
+        { catId: 'sucre', name: 'Galettes St-Michel', price: 1.59, qty: 1, done: false },
+        { catId: 'sucre', name: 'Chocolat Poulain', price: 2.37, qty: 1, done: false },
+        { catId: 'sucre', name: 'Biscottes', price: 1.57, qty: 1, done: false },
+        { catId: 'boissons', name: 'Lait soja vanille', price: 1.45, qty: 1, done: false },
+        { catId: 'boissons', name: 'Eau Cristaline', price: 1.20, qty: 1, done: false },
+        { catId: 'fruits', name: 'Bananes', price: 0.99, qty: 1, done: false },
+        { catId: 'animaux', name: 'Croquettes Fido', price: 21.81, qty: 1, done: false },
+        { catId: 'animaux', name: 'Pâtée pour chat', price: 0.23, qty: 1, done: false },
+        { catId: 'hygiene', name: 'Gel douche Mixa', price: 5.70, qty: 1, done: false }
     ];
 
-    if(localStorage.getItem('leclerc_v6')) {
-        shoppingItems = JSON.parse(localStorage.getItem('leclerc_v6'));
+    if(localStorage.getItem('leclerc_final')) {
+        data = JSON.parse(localStorage.getItem('leclerc_final'));
     }
 
     function render() {
-        const container = document.getElementById('lists-container');
-        const panier = document.getElementById('panier-items');
-        const totalEl = document.getElementById('total-val');
-        
-        container.innerHTML = '';
-        panier.innerHTML = '';
+        const main = document.getElementById('main-content');
+        const panier = document.getElementById('panier-list');
         let total = 0;
 
-        CONFIG.forEach(cat => {
+        main.innerHTML = '';
+        panier.innerHTML = '';
+
+        CATS.forEach(cat => {
             const block = document.createElement('div');
             block.className = 'cat-block';
-            
-            const activeItems = shoppingItems.filter(i => i.catId === cat.id && !i.checked);
-            let itemsHtml = activeItems.map(item => buildRow(item)).join('');
-
             block.innerHTML = `
-                <div class="cat-header"><div class="cat-dot ${cat.color}"></div>${cat.label}</div>
-                <div class="quick-add">
-                    <input type="text" id="in-${cat.id}" class="input-name" placeholder="Ex: Pâtes...">
-                    <input type="number" id="pr-${cat.id}" class="input-price" step="0.01" placeholder="Prix">
-                    <button class="btn-ok" onclick="addNewItem('${cat.id}')">OK</button>
+                <div class="cat-title"><div class="dot" style="background:${cat.color}"></div>${cat.name}</div>
+                <div class="add-zone">
+                    <input type="text" id="in-${cat.id}" class="in-name" placeholder="Nom...">
+                    <input type="number" id="pr-${cat.id}" class="in-price" step="0.01" placeholder="Prix">
+                    <button class="btn-add" onclick="addNew('${cat.id}')">OK</button>
                 </div>
-                <div>${itemsHtml}</div>
+                <div id="list-${cat.id}"></div>
             `;
-            container.appendChild(block);
+            
+            const listDiv = block.querySelector(`#list-${cat.id}`);
+            data.filter(i => i.catId === cat.id && !i.done).forEach(item => {
+                listDiv.appendChild(createRow(item));
+            });
+            main.appendChild(block);
         });
 
-        // Panier
-        shoppingItems.filter(i => i.checked).forEach(item => {
-            panier.innerHTML += buildRow(item);
+        data.filter(i => i.done).forEach(item => {
+            panier.appendChild(createRow(item));
             total += (item.price * item.qty);
         });
 
-        totalEl.innerText = total.toFixed(2);
-        localStorage.setItem('leclerc_v6', JSON.stringify(shoppingItems));
+        document.getElementById('total-val').innerText = total.toFixed(2);
+        localStorage.setItem('leclerc_final', JSON.stringify(data));
     }
 
-    function buildRow(item) {
-        const idx = shoppingItems.indexOf(item);
-        const subTotal = (item.price * item.qty).toFixed(2);
-        return `
-            <div class="item-row ${item.checked ? 'in-panier' : ''}">
-                <input type="checkbox" class="chk" ${item.checked ? 'checked' : ''} onchange="toggleCheck(${idx})">
-                <div class="item-main">
-                    <span class="item-label">${item.name}</span>
-                    <span class="item-sub">${item.price.toFixed(2)}€/u ${item.goal ? ' • Obj: '+item.goal : ''}</span>
-                </div>
-                ${!item.checked ? `
-                <div class="counter">
-                    <button class="btn-c" onclick="editQty(${idx}, -1)">-</button>
-                    <span class="val-q">${item.qty}</span>
-                    <button class="btn-c" onclick="editQty(${idx}, 1)">+</button>
-                </div>
-                ` : `<div style="font-weight:bold; margin-right:10px;">x${item.qty}</div>`}
-                <div class="price-final">${subTotal} €</div>
+    function createRow(item) {
+        const idx = data.indexOf(item);
+        const div = document.createElement('div');
+        div.className = `row ${item.done ? 'is-done' : ''}`;
+        div.innerHTML = `
+            <input type="checkbox" class="chk" ${item.done ? 'checked' : ''} onchange="toggle(${idx})">
+            <div class="info">
+                <span class="label">${item.name}</span>
+                <span class="meta">${item.price.toFixed(2)}€/u</span>
             </div>
+            ${!item.done ? `
+                <div class="cnt">
+                    <button class="btn-c" onclick="changeQty(${idx}, -1)">-</button>
+                    <span class="val-q">${item.qty}</span>
+                    <button class="btn-c" onclick="changeQty(${idx}, 1)">+</button>
+                </div>
+            ` : `<div style="margin-right:10px; font-weight:bold;">x${item.qty}</div>`}
+            <div class="price-end">${(item.price * item.qty).toFixed(2)} €</div>
         `;
+        return div;
     }
 
-    window.addNewItem = (catId) => {
-        const nameInput = document.getElementById(`in-${catId}`);
-        const priceInput = document.getElementById(`pr-${catId}`);
-        const name = nameInput.value.trim();
-        const price = parseFloat(priceInput.value);
-
+    window.addNew = (catId) => {
+        const nInput = document.getElementById(`in-${catId}`);
+        const pInput = document.getElementById(`pr-${catId}`);
+        const name = nInput.value.trim();
+        const price = parseFloat(pInput.value);
         if(name && !isNaN(price)) {
-            shoppingItems.push({ catId, name, price, qty: 1, checked: false, goal: "" });
-            nameInput.value = ''; priceInput.value = '';
-            render();
+            data.push({ catId, name, price, qty: 1, done: false });
+            nInput.value = ''; pInput.value = ''; render();
         }
     };
 
-    window.toggleCheck = (idx) => { shoppingItems[idx].checked = !shoppingItems[idx].checked; render(); };
-    window.editQty = (idx, delta) => { 
-        shoppingItems[idx].qty = Math.max(1, shoppingItems[idx].qty + delta); 
-        render(); 
-    };
+    window.toggle = (idx) => { data[idx].done = !data[idx].done; render(); };
+    window.changeQty = (idx, d) => { data[idx].qty = Math.max(1, data[idx].qty + d); render(); };
 
     render();
 </script>
