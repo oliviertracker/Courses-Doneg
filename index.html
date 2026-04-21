@@ -2,154 +2,230 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Leclerc Flers : Ma Liste</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ma Liste de Courses Intelligente</title>
     <style>
-        :root { --primary: #1e272e; --accent: #05c46b; --bg: #f1f2f6; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 160px; }
-        header { background: var(--primary); color: white; text-align: center; padding: 15px; position: sticky; top: 0; z-index: 1000; }
-        .container { max-width: 600px; margin: auto; padding: 10px; }
-        
-        .cat-block { background: white; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .cat-title { font-weight: bold; text-transform: uppercase; font-size: 0.8rem; color: #7f8c8d; border-bottom: 2px solid #eee; padding-bottom: 5px; margin-bottom: 10px; }
+        :root {
+            --primary: #2c3e50;
+            --accent: #27ae60;
+            --bg: #f4f7f6;
+            --white: #ffffff;
+        }
 
-        .add-zone { display: flex; gap: 5px; margin-bottom: 15px; background: #f8f9fa; padding: 10px; border-radius: 10px; }
-        .add-zone input { border: 1px solid #ccc; padding: 10px; border-radius: 8px; flex: 1; font-size: 16px; }
-        .btn-ok { background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--primary);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-        .row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f2f6; gap: 10px; }
-        .chk { width: 32px; height: 32px; accent-color: var(--accent); cursor: pointer; }
-        .info { flex: 1; }
-        .label { font-weight: bold; display: block; font-size: 1.1rem; }
-        .meta { font-size: 0.8rem; color: #7f8c8d; }
+        .container {
+            width: 100%;
+            max-width: 600px;
+        }
 
-        .controls { display: flex; align-items: center; gap: 8px; background: #eee; padding: 5px; border-radius: 20px; }
-        .btn-c { background: white; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 1.2rem; }
-        .qty { font-weight: bold; min-width: 20px; text-align: center; }
-        .price { font-weight: 900; min-width: 80px; text-align: right; color: var(--primary); font-size: 1.1rem; }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+            background: var(--white);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+        }
 
-        .in-panier { background: #e8f5e9; border-left: 5px solid var(--accent); padding-left: 10px; opacity: 0.9; }
-        .in-panier .label { text-decoration: line-through; color: #2e7d32; }
+        .total-badge {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--accent);
+        }
 
-        .footer { position: fixed; bottom: 0; width: 100%; background: var(--accent); color: white; text-align: center; padding: 15px 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); z-index: 2000; }
-        .total-val { font-size: 3rem; font-weight: 900; }
+        .category {
+            background: var(--white);
+            margin-bottom: 15px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .category-title {
+            background: #ecf0f1;
+            padding: 10px 15px;
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-bottom: 1px solid #eee;
+            transition: background 0.2s;
+        }
+
+        .item:last-child { border-bottom: none; }
+
+        .item.checked {
+            background: #e8f8f0;
+            color: #7f8c8d;
+            text-decoration: line-through;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+        }
+
+        .item-details { flex-grow: 1; }
+        .item-price { font-weight: bold; margin-left: 10px; }
+
+        .add-form {
+            display: flex;
+            padding: 10px;
+            gap: 5px;
+            background: #f9f9f9;
+        }
+
+        .add-form input {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .add-form input[type="text"] { flex-grow: 1; }
+        .add-form input[type="number"] { width: 70px; }
+
+        .btn-add {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .cart-summary {
+            margin-top: 20px;
+            font-style: italic;
+            text-align: center;
+            color: #7f8c8d;
+        }
     </style>
 </head>
 <body>
 
-<header>LECLERC FLERS : MA LISTE</header>
-
 <div class="container">
-    <div id="shopping-list"></div>
-    <h2 style="color:#7f8c8d; margin: 30px 10px 10px;">🛍️ MON PANIER</h2>
-    <div id="cart-list"></div>
-</div>
+    <header>
+        <h1>🛒 Ma Liste</h1>
+        <div class="total-badge">Total Panier : <span id="grand-total">0.00</span> €</div>
+    </header>
 
-<div class="footer">
-    <div style="font-size: 0.9rem; font-weight: bold; letter-spacing: 1px;">TOTAL À PAYER EN CAISSE</div>
-    <div class="total-val"><span id="grand-total">0.00</span> €</div>
+    <div id="categories-container">
+        </div>
+
+    <div class="cart-summary">
+        Cochez les articles pour les ajouter au montant total.
+    </div>
 </div>
 
 <script>
-    const CATEGORIES = ["PRODUITS FRAIS", "ÉPICERIE SALÉE", "ÉPICERIE SUCRÉE", "BOISSONS", "FRUITS & LÉGUMES", "ANIMAUX", "HYGIÈNE"];
-
-    let items = [
-        { cat: 'PRODUITS FRAIS', name: 'Yaourts chèvre vanille', p: 2.05, q: 1, done: false, obj: '15 packs' },
-        { cat: 'PRODUITS FRAIS', name: 'Blancs de dinde / poulet', p: 1.89, q: 1, done: false, obj: '15 lots' },
-        { cat: 'PRODUITS FRAIS', name: 'Œufs (12)', p: 2.88, q: 1, done: false, obj: '2 boîtes' },
-        { cat: 'ÉPICERIE SALÉE', name: 'Riz Ribasmati', p: 1.93, q: 1, done: false, obj: '2 kg' },
-        { cat: 'ÉPICERIE SALÉE', name: 'Maquereaux moutarde', p: 1.97, q: 1, done: false, obj: '5 lots' },
-        { cat: 'ÉPICERIE SALÉE', name: 'Sardines à la tomate', p: 1.15, q: 1, done: false, obj: '10 boîtes' },
-        { cat: 'ÉPICERIE SUCRÉE', name: 'Galettes St-Michel', p: 1.59, q: 1, done: false, obj: '15 lots' },
-        { cat: 'ÉPICERIE SUCRÉE', name: 'Chocolat Poulain', p: 2.37, q: 1, done: false, obj: '4 lots' },
-        { cat: 'BOISSONS', name: 'Lait soja vanille', p: 1.45, q: 1, done: false, obj: '8 litres' },
-        { cat: 'BOISSONS', name: 'Eau Cristaline', p: 1.20, q: 1, done: false, obj: '8 packs' },
-        { cat: 'FRUITS & LÉGUMES', name: 'Bananes', p: 0.99, q: 1, done: false, obj: '4 lots' },
-        { cat: 'ANIMAUX', name: 'Croquettes Fido', p: 21.81, q: 1, done: false, obj: '1 sac' },
-        { cat: 'ANIMAUX', name: 'Pâtée pour chat', p: 0.23, q: 1, done: false, obj: '12 boîtes' },
-        { cat: 'HYGIÈNE', name: 'Gel douche Mixa', p: 5.70, q: 1, done: false, obj: '1 flacon' }
+    // Données initiales basées sur votre image
+    const initialData = [
+        { cat: "Produits Frais", name: "Yaourts chèvre vanille", price: 2.05 },
+        { cat: "Produits Frais", name: "Blancs de dinde/poulet", price: 1.89 },
+        { cat: "Produits Frais", name: "Œufs (boîte de 12)", price: 2.88 },
+        { cat: "Épicerie Salée", name: "Maquereaux moutarde", price: 3.94 },
+        { cat: "Épicerie Salée", name: "Sardines à la tomate", price: 1.15 },
+        { cat: "Épicerie Salée", name: "Riz Ribasmati", price: 1.93 },
+        { cat: "Épicerie Salée", name: "Riz Riron", price: 1.77 },
+        { cat: "Épicerie Sucrée", name: "Galettes St-Michel", price: 1.59 },
+        { cat: "Épicerie Sucrée", name: "Chocolat Poulain", price: 2.37 },
+        { cat: "Épicerie Sucrée", name: "Biscottes", price: 1.57 },
+        { cat: "Boissons", name: "Lait soja vanille", price: 1.45 },
+        { cat: "Boissons", name: "Eau Cristaline", price: 1.20 },
+        { cat: "Fruits & Légumes", name: "Bananes", price: 0.99 },
+        { cat: "Animaux", name: "Croquettes Fido", price: 21.81 },
+        { cat: "Animaux", name: "Pâtée pour chat", price: 0.23 },
+        { cat: "Hygiène", name: "Gel douche Mixa Bébé", price: 5.70 }
     ];
 
-    if(localStorage.getItem('leclerc_v_stable')) {
-        items = JSON.parse(localStorage.getItem('leclerc_v_stable'));
+    let total = 0;
+
+    function renderApp() {
+        const container = document.getElementById('categories-container');
+        container.innerHTML = '';
+
+        // Grouper par catégorie
+        const groups = initialData.reduce((acc, item) => {
+            if (!acc[item.cat]) acc[item.cat] = [];
+            acc[item.cat].push(item);
+            return acc;
+        }, {});
+
+        for (const [catName, items] of Object.entries(groups)) {
+            const catDiv = document.createElement('div');
+            catDiv.className = 'category';
+            
+            let itemsHtml = items.map(item => `
+                <div class="item">
+                    <input type="checkbox" onchange="toggleItem(this, ${item.price})">
+                    <div class="item-details">${item.name}</div>
+                    <div class="item-price">${item.price.toFixed(2)}€</div>
+                </div>
+            `).join('');
+
+            catDiv.innerHTML = `
+                <div class="category-title">${catName}</div>
+                ${itemsHtml}
+                <div class="add-form">
+                    <input type="text" placeholder="Nouvel article..." id="input-name-${catName.replace(/\s/g, '')}">
+                    <input type="number" step="0.01" placeholder="Prix" id="input-price-${catName.replace(/\s/g, '')}">
+                    <button class="btn-add" onclick="addNewItem('${catName}')">+</button>
+                </div>
+            `;
+            container.appendChild(catDiv);
+        }
     }
 
-    function render() {
-        const listContainer = document.getElementById('shopping-list');
-        const cartContainer = document.getElementById('cart-list');
-        const totalDisplay = document.getElementById('grand-total');
-        let currentTotal = 0;
-
-        listContainer.innerHTML = '';
-        cartContainer.innerHTML = '';
-
-        CATEGORIES.forEach(c => {
-            const block = document.createElement('div');
-            block.className = 'cat-block';
-            block.innerHTML = `
-                <div class="cat-title">${c}</div>
-                <div class="add-zone">
-                    <input type="text" id="n-${c}" placeholder="Ajouter...">
-                    <input type="number" id="p-${c}" placeholder="Prix" step="0.01" style="width:75px">
-                    <button class="btn-ok" onclick="addItem('${c}')">OK</button>
-                </div>
-                <div id="items-${c}"></div>
-            `;
-            listContainer.appendChild(block);
-        });
-
-        items.forEach((item, index) => {
-            const row = document.createElement('div');
-            row.className = `row ${item.done ? 'in-panier' : ''}`;
-            row.innerHTML = `
-                <input type="checkbox" class="chk" ${item.done ? 'checked' : ''} onchange="toggleItem(${index})">
-                <div class="info">
-                    <span class="label">${item.name}</span>
-                    <span class="meta">${item.p.toFixed(2)}€/u • ${item.obj || ''}</span>
-                </div>
-                <div class="controls">
-                    <button class="btn-c" onclick="updateQty(${index},-1)">-</button>
-                    <span class="qty">${item.q}</span>
-                    <button class="btn-c" onclick="updateQty(${index},1)">+</button>
-                </div>
-                <div class="price">${(item.p * item.q).toFixed(2)} €</div>
-            `;
-
-            if(item.done) {
-                cartContainer.appendChild(row);
-                currentTotal += (item.p * item.q);
-            } else {
-                const target = document.getElementById(`items-${item.cat}`);
-                if(target) target.appendChild(row);
-            }
-        });
-
-        totalDisplay.innerText = currentTotal.toFixed(2);
-        localStorage.setItem('leclerc_v_stable', JSON.stringify(items));
+    window.toggleItem = function(checkbox, price) {
+        const itemDiv = checkbox.closest('.item');
+        if (checkbox.checked) {
+            total += price;
+            itemDiv.classList.add('checked');
+        } else {
+            total -= price;
+            itemDiv.classList.remove('checked');
+        }
+        document.getElementById('grand-total').innerText = Math.abs(total).toFixed(2);
     }
 
-    window.addItem = (category) => {
-        const nameInput = document.getElementById(`n-${category}`);
-        const priceInput = document.getElementById(`p-${category}`);
+    window.addNewItem = function(category) {
+        const nameInput = document.getElementById(`input-name-${category.replace(/\s/g, '')}`);
+        const priceInput = document.getElementById(`input-price-${category.replace(/\s/g, '')}`);
+        
         const name = nameInput.value.trim();
         const price = parseFloat(priceInput.value);
-        if(name && !isNaN(price)) {
-            items.push({ cat: category, name: name, p: price, q: 1, done: false });
-            render();
+
+        if (name && !isNaN(price)) {
+            initialData.push({ cat: category, name: name, price: price });
+            renderApp();
+        } else {
+            alert("Veuillez entrer un nom et un prix valide.");
         }
-    };
+    }
 
-    window.toggleItem = (index) => {
-        items[index].done = !items[index].done;
-        render();
-    };
-
-    window.updateQty = (index, delta) => {
-        items[index].q = Math.max(1, items[index].q + delta);
-        render();
-    };
-
-    render();
+    renderApp();
 </script>
+
 </body>
 </html>
