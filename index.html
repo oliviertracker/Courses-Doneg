@@ -3,167 +3,138 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Courses Leclerc Flers</title>
+    <title>Courses Leclerc Flers - FINAL</title>
     <style>
         :root { --primary: #1e272e; --accent: #05c46b; --bg: #f1f2f6; }
-        body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 160px; -webkit-tap-highlight-color: transparent; }
-        header { background: var(--primary); color: white; text-align: center; padding: 15px; font-size: 1.2rem; font-weight: bold; }
+        body { font-family: sans-serif; background: var(--bg); margin: 0; padding-bottom: 160px; }
+        header { background: var(--primary); color: white; text-align: center; padding: 15px; font-weight: bold; }
         .container { max-width: 600px; margin: auto; padding: 10px; }
-
-        .cat-block { background: white; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .cat-title { font-weight: bold; text-transform: uppercase; font-size: 0.9rem; margin-bottom: 10px; border-bottom: 2px solid #eee; padding-bottom: 5px; color: #7f8c8d; }
-
-        /* Formulaire */
-        .add-zone { display: flex; gap: 5px; margin-bottom: 15px; }
-        .add-zone input { border: 1px solid #ccc; padding: 10px; border-radius: 8px; font-size: 1rem; }
-        .in-name { flex: 2; }
-        .in-price { width: 70px; }
-        .btn-add { background: var(--primary); color: white; border: none; padding: 10px; border-radius: 8px; font-weight: bold; cursor: pointer; min-width: 50px; }
-
-        /* Articles */
-        .row { display: flex; align-items: center; padding: 15px 0; border-bottom: 1px solid #f1f2f6; }
-        .chk-area { padding-right: 15px; }
-        .chk { width: 30px; height: 30px; cursor: pointer; accent-color: var(--accent); }
-        .info { flex: 1; }
-        .label { font-weight: bold; display: block; font-size: 1.1rem; }
-        .meta { font-size: 0.8rem; color: #7f8c8d; }
-
-        .cnt { display: flex; align-items: center; gap: 10px; background: #eee; padding: 5px 10px; border-radius: 20px; }
-        .btn-c { background: white; border: none; width: 30px; height: 30px; border-radius: 50%; font-weight: bold; font-size: 1.2rem; cursor: pointer; }
-        .val-q { font-weight: bold; min-width: 20px; text-align: center; font-size: 1.1rem; }
-
-        .price-end { font-weight: 900; min-width: 80px; text-align: right; color: var(--primary); font-size: 1.1rem; }
-
-        /* Panier */
-        .is-done { background: #f9f9f9; opacity: 0.7; border-left: 5px solid var(--accent); padding-left: 10px; }
-        .is-done .label { text-decoration: line-through; }
         
-        /* Footer */
-        .footer { position: fixed; bottom: 0; width: 100%; background: var(--accent); color: white; text-align: center; padding: 20px 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); z-index: 1000; }
-        .total-num { font-size: 3rem; font-weight: 900; }
+        .cat-block { background: white; border-radius: 15px; padding: 15px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .cat-title { font-weight: bold; text-transform: uppercase; font-size: 0.8rem; color: #7f8c8d; border-bottom: 2px solid #eee; padding-bottom: 5px; margin-bottom: 10px; }
+
+        .add-zone { display: flex; gap: 5px; margin-bottom: 15px; }
+        .add-zone input { border: 1px solid #ccc; padding: 10px; border-radius: 8px; flex: 1; font-size: 16px; }
+        .btn-ok { background: var(--primary); color: white; border: none; padding: 10px 15px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+
+        .row { display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f2f6; gap: 10px; }
+        .chk { width: 28px; height: 28px; accent-color: var(--accent); }
+        .info { flex: 1; }
+        .label { font-weight: bold; display: block; font-size: 1rem; }
+        .meta { font-size: 0.75rem; color: #7f8c8d; }
+
+        .controls { display: flex; align-items: center; gap: 8px; background: #eee; padding: 5px; border-radius: 20px; }
+        .btn-c { background: white; border: none; width: 28px; height: 28px; border-radius: 50%; font-weight: bold; cursor: pointer; }
+        .qty { font-weight: bold; min-width: 20px; text-align: center; }
+        .price { font-weight: 900; min-width: 75px; text-align: right; color: var(--primary); }
+
+        .in-panier { background: #f9f9f9; opacity: 0.6; border-left: 4px solid var(--accent); padding-left: 8px; }
+        .in-panier .label { text-decoration: line-through; }
+
+        .footer { position: fixed; bottom: 0; width: 100%; background: var(--accent); color: white; text-align: center; padding: 15px 0; box-shadow: 0 -5px 15px rgba(0,0,0,0.2); z-index: 1000; }
+        .total-val { font-size: 2.8rem; font-weight: 900; }
     </style>
 </head>
 <body>
 
-<header>LECLERC FLERS : MA LISTE</header>
+<header>LECLERC FLERS : MON ASSISTANT</header>
 
 <div class="container">
-    <div id="main-list"></div>
-    <h2 style="color:#7f8c8d; margin: 30px 0 15px 10px;">🛒 MON PANIER</h2>
-    <div id="panier-list"></div>
+    <div id="main-content"></div>
+    <h2 style="color:#7f8c8d; margin: 30px 10px 10px;">🛒 MON PANIER</h2>
+    <div id="panier-content"></div>
 </div>
 
 <div class="footer">
-    <div style="font-weight: bold; letter-spacing: 1px;">TOTAL À PAYER</div>
-    <div class="total-num"><span id="total-val">0.00</span> €</div>
+    <div style="font-size: 0.8rem; font-weight: bold;">TOTAL À PAYER</div>
+    <div class="total-val"><span id="grand-total">0.00</span> €</div>
 </div>
 
 <script>
-    const CATS = [
-        { id: 'frais', name: 'Produits Frais' },
-        { id: 'sale', name: 'Épicerie Salée' },
-        { id: 'sucre', name: 'Épicerie Sucrée' },
-        { id: 'boissons', name: 'Boissons' },
-        { id: 'animaux', name: 'Animaux' },
-        { id: 'hygiene', name: 'Hygiène' }
-    ];
+    const CATS = ["FRAIS", "ÉPICERIE SALÉE", "ÉPICERIE SUCRÉE", "BOISSONS", "FRUITS", "ANIMAUX", "HYGIÈNE"];
 
     let items = [
-        { catId: 'frais', name: 'Yaourts chèvre vanille', price: 2.05, qty: 1, checked: false, goal: '15 packs' },
-        { catId: 'frais', name: 'Blancs de dinde/poulet', price: 1.89, qty: 1, checked: false, goal: '15 lots' },
-        { catId: 'frais', name: 'Œufs (12)', price: 2.88, qty: 1, checked: false, goal: '2 boîtes' },
-        { catId: 'sucre', name: 'Galettes St-Michel', price: 1.59, qty: 1, checked: false, goal: '15 lots' },
-        { catId: 'sale', name: 'Maquereaux moutarde', price: 1.97, qty: 1, checked: false, goal: '5 lots' },
-        { catId: 'boissons', name: 'Lait soja vanille', price: 1.45, qty: 1, checked: false, goal: '8 litres' },
-        { catId: 'sale', name: 'Sardines à la tomate', price: 1.15, qty: 1, checked: false, goal: '10 boîtes' },
-        { catId: 'boissons', name: 'Eau Cristaline', price: 1.20, qty: 1, checked: false, goal: '8 packs' },
-        { catId: 'animaux', name: 'Croquettes Fido', price: 21.81, qty: 1, checked: false, goal: '1 sac' },
-        { catId: 'hygiene', name: 'Gel douche Mixa', price: 5.70, qty: 1, checked: false, goal: '1 flacon' }
+        { cat: 'FRAIS', name: 'Yaourts chèvre vanille', p: 2.05, q: 1, done: false, obj: '15 packs' },
+        { cat: 'FRAIS', name: 'Blancs de dinde/poulet', p: 1.89, q: 1, done: false, obj: '15 lots' },
+        { cat: 'FRAIS', name: 'Œufs (12)', p: 2.88, q: 1, done: false, obj: '2 boîtes' },
+        { cat: 'ÉPICERIE SUCRÉE', name: 'Galettes St-Michel', p: 1.59, q: 1, done: false, obj: '15 lots' },
+        { cat: 'ÉPICERIE SALÉE', name: 'Maquereaux moutarde', p: 1.97, q: 1, done: false, obj: '5 lots' },
+        { cat: 'BOISSONS', name: 'Lait soja vanille', p: 1.45, q: 1, done: false, obj: '8 litres' },
+        { cat: 'ÉPICERIE SALÉE', name: 'Sardines à la tomate', p: 1.15, q: 1, done: false, obj: '10 boîtes' },
+        { cat: 'BOISSONS', name: 'Eau Cristaline', p: 1.20, q: 1, done: false, obj: '8 packs' },
+        { cat: 'ANIMAUX', name: 'Croquettes Fido', p: 21.81, q: 1, done: false, obj: '1 sac' },
+        { cat: 'ANIMAUX', name: 'Pâtée pour chat', p: 0.23, q: 1, done: false, obj: '12 boîtes' },
+        { cat: 'HYGIÈNE', name: 'Gel douche Mixa', p: 5.70, q: 1, done: false, obj: '1 flacon' }
     ];
 
-    if(localStorage.getItem('leclerc_v7')) {
-        items = JSON.parse(localStorage.getItem('leclerc_v7'));
+    if(localStorage.getItem('leclerc_data')) {
+        items = JSON.parse(localStorage.getItem('leclerc_data'));
     }
 
     function render() {
-        const main = document.getElementById('main-list');
-        const panier = document.getElementById('panier-list');
+        const main = document.getElementById('main-content');
+        const panier = document.getElementById('panier-content');
         let total = 0;
 
         main.innerHTML = '';
         panier.innerHTML = '';
 
-        CATS.forEach(cat => {
+        CATS.forEach(c => {
             const block = document.createElement('div');
             block.className = 'cat-block';
             block.innerHTML = `
-                <div class="cat-title">${cat.name}</div>
+                <div class="cat-title">${c}</div>
                 <div class="add-zone">
-                    <input type="text" id="in-${cat.id}" class="in-name" placeholder="Ajouter...">
-                    <input type="number" id="pr-${cat.id}" class="in-price" step="0.01" placeholder="Prix">
-                    <button class="btn-add" onclick="addItem('${cat.id}')">OK</button>
+                    <input type="text" id="n-${c}" placeholder="Nom...">
+                    <input type="number" id="p-${c}" placeholder="Prix" style="width:60px">
+                    <button class="btn-ok" onclick="addItem('${c}')">OK</button>
                 </div>
-                <div id="items-${cat.id}"></div>
+                <div id="list-${c}"></div>
             `;
-            
-            const listDiv = block.querySelector(`#items-${cat.id}`);
-            items.filter(i => i.catId === cat.id && !i.checked).forEach(item => {
-                listDiv.appendChild(createRow(item));
-            });
             main.appendChild(block);
         });
 
-        items.filter(i => i.checked).forEach(item => {
-            panier.appendChild(createRow(item));
-            total += (item.price * item.qty);
+        items.forEach((item, index) => {
+            const row = document.createElement('div');
+            row.className = `row ${item.done ? 'in-panier' : ''}`;
+            row.innerHTML = `
+                <input type="checkbox" class="chk" ${item.done ? 'checked' : ''} onclick="toggle(${index})">
+                <div class="info">
+                    <span class="label">${item.name}</span>
+                    <span class="meta">${item.p.toFixed(2)}€/u • ${item.obj || ''}</span>
+                </div>
+                ${!item.done ? `
+                <div class="controls">
+                    <button class="btn-c" onclick="qty(${index},-1)">-</button>
+                    <span class="qty">${item.q}</span>
+                    <button class="btn-c" onclick="qty(${index},1)">+</button>
+                </div>` : `<div style="margin-right:10px">x${item.q}</div>`}
+                <div class="price">${(item.p * item.q).toFixed(2)} €</div>
+            `;
+
+            if(item.done) {
+                panier.appendChild(row);
+                total += (item.p * item.q);
+            } else {
+                document.getElementById(`list-${item.cat}`).appendChild(row);
+            }
         });
 
-        document.getElementById('total-val').innerText = total.toFixed(2);
-        localStorage.setItem('leclerc_v7', JSON.stringify(items));
+        document.getElementById('grand-total').innerText = total.toFixed(2);
+        localStorage.setItem('leclerc_data', JSON.stringify(items));
     }
 
-    function createRow(item) {
-        const idx = items.indexOf(item);
-        const div = document.createElement('div');
-        div.className = `row ${item.checked ? 'is-done' : ''}`;
-        div.innerHTML = `
-            <div class="chk-area">
-                <input type="checkbox" class="chk" ${item.checked ? 'checked' : ''} onchange="toggle(${idx})">
-            </div>
-            <div class="info">
-                <span class="label">${item.name}</span>
-                <span class="meta">${item.price.toFixed(2)}€/u ${item.goal ? '• '+item.goal : ''}</span>
-            </div>
-            ${!item.checked ? `
-                <div class="cnt">
-                    <button class="btn-c" onclick="changeQty(${idx}, -1)">-</button>
-                    <span class="val-q">${item.qty}</span>
-                    <button class="btn-c" onclick="changeQty(${idx}, 1)">+</button>
-                </div>
-            ` : `<div style="font-weight:bold; margin-right:10px;">x${item.qty}</div>`}
-            <div class="price-end">${(item.price * item.qty).toFixed(2)} €</div>
-        `;
-        return div;
-    }
-
-    window.addItem = (catId) => {
-        const n = document.getElementById(`in-${catId}`);
-        const p = document.getElementById(`pr-${catId}`);
-        if(n.value && !isNaN(parseFloat(p.value))) {
-            items.push({ catId, name: n.value, price: parseFloat(p.value), qty: 1, checked: false });
+    window.addItem = (c) => {
+        const n = document.getElementById(`n-${c}`).value;
+        const p = parseFloat(document.getElementById(`p-${c}`).value);
+        if(n && !isNaN(p)) {
+            items.push({ cat: c, name: n, p: p, q: 1, done: false });
             render();
         }
     };
 
-    window.toggle = (idx) => {
-        items[idx].checked = !items[idx].checked;
-        render(); // Force le re-calcul et le déplacement vers le panier
-    };
-
-    window.changeQty = (idx, d) => {
-        items[idx].qty = Math.max(1, items[idx].qty + d);
-        render();
-    };
+    window.toggle = (i) => { items[i].done = !items[i].done; render(); };
+    window.qty = (i, d) => { items[i].q = Math.max(1, items[i].q + d); render(); };
 
     render();
 </script>
